@@ -1,58 +1,251 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 ETP - Enterprise Technology Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> A modern, scalable, and modular Enterprise Resource Planning (ERP) platform built with Laravel 13.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📖 About
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+ETP (Enterprise Technology Platform) is an open-source ERP system designed to simplify business management by bringing all essential operations into a single platform.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Instead of using multiple disconnected applications, ETP provides one centralized solution for managing:
 
-## Learning Laravel
+* Authentication & Authorization
+* Companies & Branches
+* Human Resources (HR)
+* Customer Relationship Management (CRM)
+* Inventory Management
+* Purchasing
+* Sales
+* Accounting
+* Reports & Analytics
+* System Settings
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The project is built with scalability, maintainability, and clean architecture in mind, making it suitable for both small businesses and large enterprises.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+# ✨ Features
 
-## Agentic Development
+## Authentication
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+* Secure Login
+* Password Reset
+* Email Verification
+* Role & Permission Management
+* Session Management
+* Rate Limiting
+
+---
+
+## Company Management
+
+* Companies
+* Branches
+* Departments
+* Positions
+
+---
+
+## Human Resources
+
+* Employees
+* Attendance
+* Leave Requests
+* Payroll
+
+---
+
+## Inventory
+
+* Warehouses
+* Products
+* Categories
+* Stock Management
+* Stock Transfers
+
+---
+
+## Sales
+
+* Customers
+* Quotations
+* Orders
+* Invoices
+* Payments
+
+---
+
+## Purchasing
+
+* Vendors
+* Purchase Orders
+* Goods Receipts
+
+---
+
+## Accounting
+
+* Chart of Accounts
+* Journal Entries
+* Expenses
+* Income
+* Financial Reports
+
+---
+
+## CRM
+
+* Customers
+* Leads
+* Activities
+* Notes
+
+---
+
+## Reporting
+
+* Dashboard
+* Sales Reports
+* Inventory Reports
+* HR Reports
+* Financial Reports
+
+---
+
+# 🏗 Architecture
+
+ETP follows a modular and scalable architecture based on Laravel best practices.
+
+Core principles:
+
+* SOLID
+* DRY
+* KISS
+* YAGNI
+* Clean Code
+* Feature-Based Development
+
+The project is organized into independent modules to keep the codebase maintainable and easy to extend.
+
+---
+
+# 🛠 Tech Stack
+
+### Backend
+
+* Laravel 13
+* PHP 8.4+
+* MySQL
+
+### Frontend
+
+* Blade
+* Vite
+* JavaScript
+
+### Security
+
+* Laravel Breeze
+* Spatie Laravel Permission
+* CSRF Protection
+* Rate Limiting
+
+---
+
+# 📂 Project Status
+
+Current Phase:
+
+✅ Project Foundation
+
+Upcoming:
+
+* Authentication
+* Authorization
+* Company Module
+* Employee Module
+* Inventory Module
+* Sales Module
+* Accounting Module
+
+---
+
+# 📋 Development Roadmap
+
+* [x] Project Foundation
+* [ ] Authentication
+* [ ] Roles & Permissions
+* [ ] Company Management
+* [ ] Branch Management
+* [ ] Department Management
+* [ ] Employee Management
+* [ ] CRM
+* [ ] Inventory
+* [ ] Purchasing
+* [ ] Sales
+* [ ] Accounting
+* [ ] Reports
+* [ ] Dashboard
+* [ ] Notifications
+* [ ] API
+* [ ] AI Integration
+
+---
+
+# 🚀 Installation
 
 ```bash
-composer require laravel/boost --dev
+git clone https://github.com/kaveh-zohrabi/ETP.git
 
-php artisan boost:install
+cd ETP
+
+composer install
+
+cp .env.example .env
+
+php artisan key:generate
+
+php artisan migrate
+
+npm install
+
+npm run dev
+
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+# 🧪 Testing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan test
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 🤝 Contributing
 
-## Security Vulnerabilities
+Contributions are welcome!
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you'd like to contribute:
 
-## License
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Author
+
+**Kaveh Zohrabi**
+
+GitHub: https://github.com/kaveh-zohrabi
