@@ -11,11 +11,6 @@ use Illuminate\Validation\Rules;
 
 class RegisterRequest extends FormRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * @return array<string, ValidationRule|array<mixed>|string>
      */

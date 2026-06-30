@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTOs;
 
 use App\Support\BaseDTO;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Data Transfer Object for paginated results.
@@ -29,11 +30,11 @@ final class PaginationDTO extends BaseDTO
     /**
      * Create from a LengthAwarePaginator.
      *
-     * @param  \Illuminate\Pagination\LengthAwarePaginator  $paginator
+     * @param  LengthAwarePaginator  $paginator
      */
     public static function fromPaginator(mixed $paginator): static
     {
-        return new static(
+        return new self(
             currentPage: $paginator->currentPage(),
             lastPage: $paginator->lastPage(),
             perPage: $paginator->perPage(),

@@ -16,8 +16,9 @@ class RolePermissionSeeder extends Seeder
         $manager = Role::where('slug', 'manager')->first();
         $employee = Role::where('slug', 'employee')->first();
 
-        if (!$admin || !$manager || !$employee) {
+        if (! $admin || ! $manager || ! $employee) {
             $this->command->error('Roles not found. Run RoleSeeder first.');
+
             return;
         }
 

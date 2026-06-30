@@ -16,8 +16,9 @@ class AdminUserSeeder extends Seeder
     {
         $adminRole = Role::where('slug', 'admin')->first();
 
-        if (!$adminRole) {
+        if (! $adminRole) {
             $this->command->error('Admin role not found. Run RoleSeeder first.');
+
             return;
         }
 
@@ -31,7 +32,7 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        if (!$user->roles->contains($adminRole)) {
+        if (! $user->roles->contains($adminRole)) {
             $user->roles()->attach($adminRole);
         }
     }

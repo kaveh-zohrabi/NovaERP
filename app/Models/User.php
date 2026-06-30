@@ -88,7 +88,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getAvatarUrlAttribute(): ?string
     {
         if ($this->avatar) {
-            return asset('storage/' . $this->avatar);
+            return asset('storage/'.$this->avatar);
         }
 
         return null;
@@ -99,7 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $parts = explode(' ', $this->name);
 
         if (count($parts) >= 2) {
-            return strtoupper(mb_substr($parts[0], 0, 1) . mb_substr(end($parts), 0, 1));
+            return strtoupper(mb_substr($parts[0], 0, 1).mb_substr(end($parts), 0, 1));
         }
 
         return strtoupper(mb_substr($this->name, 0, 2));
@@ -147,7 +147,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasAllRoles(iterable $roles): bool
     {
         foreach ($roles as $role) {
-            if (!$this->hasRole($role)) {
+            if (! $this->hasRole($role)) {
                 return false;
             }
         }
@@ -197,7 +197,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasAllPermissions(iterable $permissions): bool
     {
         foreach ($permissions as $permission) {
-            if (!$this->hasPermission($permission)) {
+            if (! $this->hasPermission($permission)) {
                 return false;
             }
         }

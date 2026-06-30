@@ -6,7 +6,6 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
 abstract class BasePolicy
 {
@@ -36,12 +35,10 @@ abstract class BasePolicy
 
     /**
      * Check if user has a specific permission.
-     *
-     * @param  string  $action  Permission action (e.g., 'view', 'create')
      */
     protected function hasPermission(User $user, string $action): bool
     {
-        $permission = $this->permissionPrefix() . '.' . $action;
+        $permission = $this->permissionPrefix().'.'.$action;
 
         return $user->hasPermission($permission);
     }

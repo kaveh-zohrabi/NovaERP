@@ -33,10 +33,10 @@ class DomainException extends RuntimeException
     protected array $context = [];
 
     /**
-     * @param  string               $message  Human-readable error message
-     * @param  string               $code     Machine-readable error code
-     * @param  array<string, mixed> $context  Additional context
-     * @param  \Throwable|null      $previous Previous exception
+     * @param  string  $message  Human-readable error message
+     * @param  string  $code  Machine-readable error code
+     * @param  array<string, mixed>  $context  Additional context
+     * @param  \Throwable|null  $previous  Previous exception
      */
     public function __construct(
         string $message = '',

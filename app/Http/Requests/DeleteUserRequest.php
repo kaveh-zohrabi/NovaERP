@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules;
 
-class ResetPasswordRequest extends FormRequest
+class DeleteUserRequest extends FormRequest
 {
     /**
      * @return array<string, ValidationRule|array<mixed>|string>
@@ -16,9 +15,15 @@ class ResetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'token' => ['required'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'current_password'],
         ];
+    }
+
+    /**
+     * Get the validation bag name for error display.
+     */
+    public function validationBag(): string
+    {
+        return 'userDeletion';
     }
 }

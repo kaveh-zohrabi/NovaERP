@@ -62,7 +62,6 @@ abstract class BaseService
      *
      * @template T
      *
-     * @param  string         $connection
      * @param  Closure(): T  $callback
      * @return T
      */
