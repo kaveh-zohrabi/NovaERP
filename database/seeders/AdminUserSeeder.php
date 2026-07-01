@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\UserStatus;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminRole = Role::where('slug', 'admin')->first();
+        $adminRole = Role::where('name', 'Administrator')->first();
 
         if (! $adminRole) {
-            $this->command->error('Admin role not found. Run RoleSeeder first.');
+            $this->command->error('Administrator role not found. Run RoleSeeder first.');
 
             return;
         }
@@ -32,8 +32,8 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        if (! $user->roles->contains($adminRole)) {
-            $user->roles()->attach($adminRole);
+        if (! $user->hasRole('Administrator')) {
+            $user->assignRole($adminRole);
         }
     }
 }

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
-use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = Role::where('slug', 'admin')->first();
-        $manager = Role::where('slug', 'manager')->first();
-        $employee = Role::where('slug', 'employee')->first();
+        $admin = Role::where('name', 'Administrator')->first();
+        $manager = Role::where('name', 'Manager')->first();
+        $employee = Role::where('name', 'Employee')->first();
 
         if (! $admin || ! $manager || ! $employee) {
             $this->command->error('Roles not found. Run RoleSeeder first.');
@@ -23,28 +23,21 @@ class RolePermissionSeeder extends Seeder
         }
 
         // Admin gets everything
-        $admin->permissions()->sync(Permission::all());
+        $admin->givePermissionTo(Permission::all());
 
         // Manager gets operational permissions
-        $manager->permissions()->sync(Permission::whereIn('slug', [
-            // Users
+        $manager->givePermissionTo(Permission::whereIn('name', [
             'users.view', 'users.create', 'users.update',
-            // Invoices
             'invoices.view', 'invoices.create', 'invoices.update', 'invoices.delete',
-            // Inventory
             'inventory.view', 'inventory.adjust',
-            // Reports
             'reports.view', 'reports.export',
-        ])->pluck('id'));
+        ])->get());
 
         // Employee gets minimal permissions
-        $employee->permissions()->sync(Permission::whereIn('slug', [
-            // Invoices
+        $employee->givePermissionTo(Permission::whereIn('name', [
             'invoices.view', 'invoices.create',
-            // Inventory
             'inventory.view',
-            // Reports
             'reports.view',
-        ])->pluck('id'));
+        ])->get());
     }
 }

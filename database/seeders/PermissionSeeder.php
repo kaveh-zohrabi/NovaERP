@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
@@ -13,39 +13,38 @@ class PermissionSeeder extends Seeder
     {
         $permissions = [
             // Users
-            ['name' => 'View Users',          'slug' => 'users.view',      'group' => 'users'],
-            ['name' => 'Create Users',        'slug' => 'users.create',    'group' => 'users'],
-            ['name' => 'Update Users',        'slug' => 'users.update',    'group' => 'users'],
-            ['name' => 'Delete Users',        'slug' => 'users.delete',    'group' => 'users'],
-            ['name' => 'Manage Users',        'slug' => 'users.manage',    'group' => 'users'],
+            'users.view',
+            'users.create',
+            'users.update',
+            'users.delete',
+            'users.manage',
 
-            // Roles & Permissions
-            ['name' => 'View Roles',          'slug' => 'roles.view',      'group' => 'roles'],
-            ['name' => 'Manage Roles',        'slug' => 'roles.manage',    'group' => 'roles'],
+            // Roles
+            'roles.view',
+            'roles.manage',
 
             // Invoices
-            ['name' => 'View Invoices',       'slug' => 'invoices.view',   'group' => 'invoices'],
-            ['name' => 'Create Invoices',     'slug' => 'invoices.create', 'group' => 'invoices'],
-            ['name' => 'Update Invoices',     'slug' => 'invoices.update', 'group' => 'invoices'],
-            ['name' => 'Delete Invoices',     'slug' => 'invoices.delete', 'group' => 'invoices'],
+            'invoices.view',
+            'invoices.create',
+            'invoices.update',
+            'invoices.delete',
 
             // Inventory
-            ['name' => 'View Inventory',      'slug' => 'inventory.view',   'group' => 'inventory'],
-            ['name' => 'Adjust Inventory',    'slug' => 'inventory.adjust', 'group' => 'inventory'],
+            'inventory.view',
+            'inventory.adjust',
 
             // Reports
-            ['name' => 'View Reports',        'slug' => 'reports.view',    'group' => 'reports'],
-            ['name' => 'Export Reports',      'slug' => 'reports.export',  'group' => 'reports'],
+            'reports.view',
+            'reports.export',
 
             // Settings
-            ['name' => 'View Settings',       'slug' => 'settings.view',   'group' => 'settings'],
-            ['name' => 'Manage Settings',     'slug' => 'settings.manage', 'group' => 'settings'],
+            'settings.view',
+            'settings.manage',
         ];
 
-        foreach ($permissions as $permission) {
-            Permission::updateOrCreate(
-                ['slug' => $permission['slug']],
-                $permission
+        foreach ($permissions as $name) {
+            Permission::firstOrCreate(
+                ['name' => $name, 'guard_name' => 'web']
             );
         }
     }
