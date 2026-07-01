@@ -30,62 +30,71 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register gates for non-resource operations.
-     *
-     * Gates are used when authorization is NOT tied to a specific model.
-     * Policies are used for model-based authorization (CRUD operations).
      */
     private function registerGates(): void
     {
-        // ──────────────────────────────────────────────
-        // Settings
-        // ──────────────────────────────────────────────
-        // No Settings model exists. Settings are system-wide
-        // configuration, not individual records.
         Gate::define('view-settings', function (User $user) {
-            return $user->hasAnyPermission(['settings.view', 'settings.manage']);
+            try {
+                return $user->hasAnyPermission(['settings.view', 'settings.manage']);
+            } catch (\Throwable) {
+                return false;
+            }
         });
 
         Gate::define('manage-settings', function (User $user) {
-            return $user->hasPermissionTo('settings.manage');
+            try {
+                return $user->hasPermissionTo('settings.manage');
+            } catch (\Throwable) {
+                return false;
+            }
         });
 
-        // ──────────────────────────────────────────────
-        // Reports
-        // ──────────────────────────────────────────────
-        // Reports are aggregates, not individual records.
-        // You can't have a "Report" model with CRUD operations.
         Gate::define('view-reports', function (User $user) {
-            return $user->hasAnyPermission(['reports.view', 'reports.export']);
+            try {
+                return $user->hasAnyPermission(['reports.view', 'reports.export']);
+            } catch (\Throwable) {
+                return false;
+            }
         });
 
         Gate::define('export-reports', function (User $user) {
-            return $user->hasPermissionTo('reports.export');
+            try {
+                return $user->hasPermissionTo('reports.export');
+            } catch (\Throwable) {
+                return false;
+            }
         });
 
-        // ──────────────────────────────────────────────
-        // Sessions
-        // ──────────────────────────────────────────────
-        // Session management is infrastructure, not a domain model.
-        // You don't create/update/delete sessions like other models.
         Gate::define('view-sessions', function (User $user) {
-            return $user->hasPermissionTo('sessions.view');
+            try {
+                return $user->hasPermissionTo('sessions.view');
+            } catch (\Throwable) {
+                return false;
+            }
         });
 
         Gate::define('force-logout', function (User $user) {
-            return $user->hasPermissionTo('sessions.force-logout');
+            try {
+                return $user->hasPermissionTo('sessions.force-logout');
+            } catch (\Throwable) {
+                return false;
+            }
         });
 
-        // ──────────────────────────────────────────────
-        // Roles & Permissions
-        // ──────────────────────────────────────────────
-        // Roles and permissions are managed as a group,
-        // not as individual records with standard CRUD.
         Gate::define('manage-roles', function (User $user) {
-            return $user->hasAnyPermission(['roles.view', 'roles.manage']);
+            try {
+                return $user->hasAnyPermission(['roles.view', 'roles.manage']);
+            } catch (\Throwable) {
+                return false;
+            }
         });
 
         Gate::define('manage-permissions', function (User $user) {
-            return $user->hasAnyPermission(['permissions.view', 'permissions.manage']);
+            try {
+                return $user->hasAnyPermission(['permissions.view', 'permissions.manage']);
+            } catch (\Throwable) {
+                return false;
+            }
         });
     }
 }
