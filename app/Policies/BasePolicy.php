@@ -13,15 +13,10 @@ abstract class BasePolicy
 
     /**
      * Permission slug prefix for this policy.
-     *
-     * Each policy defines its prefix (e.g., 'users', 'invoices').
-     * Methods then check '{prefix}.{action}' (e.g., 'users.view').
      */
     abstract protected function permissionPrefix(): string;
 
     /**
-     * Run before all authorization checks.
-     *
      * Super admins bypass all permission checks.
      */
     public function before(User $user, string $ability): ?bool
@@ -40,6 +35,10 @@ abstract class BasePolicy
     {
         $permission = $this->permissionPrefix().'.'.$action;
 
-        return $user->hasPermission($permission);
+        try {
+            return $user->hasPermissionTo($permission);
+        } catch (\Throwable) {
+            return false;
+        }
     }
 }

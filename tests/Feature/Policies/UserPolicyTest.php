@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Policies;
 
-use App\Models\Permission;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class UserPolicyTest extends TestCase
@@ -20,25 +20,23 @@ class UserPolicyTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    private function createUserWithRole(string $roleSlug, array $permissionSlugs = []): User
+    private function createUserWithRole(string $roleName, array $permissionNames = []): User
     {
-        $role = Role::create([
-            'name' => ucfirst($roleSlug),
-            'slug' => $roleSlug,
-        ]);
+        $role = Role::firstOrCreate(
+            ['name' => $roleName, 'guard_name' => 'web']
+        );
 
-        foreach ($permissionSlugs as $slug) {
+        foreach ($permissionNames as $name) {
             $perm = Permission::firstOrCreate(
-                ['slug' => $slug],
-                ['name' => ucfirst(str_replace('.', ' ', $slug)), 'group' => explode('.', $slug)[0]]
+                ['name' => $name, 'guard_name' => 'web']
             );
-            $role->permissions()->attach($perm->id);
+            $role->givePermissionTo($perm);
         }
 
         $user = User::factory()->create();
-        $user->roles()->attach($role->id);
+        $user->assignRole($role);
 
-        return $user->load('roles.permissions');
+        return $user;
     }
 
     /*
