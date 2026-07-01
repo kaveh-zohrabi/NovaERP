@@ -12,34 +12,67 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            // Users
+            // ──────────────────────────────────────────────
+            // User Management
+            // ──────────────────────────────────────────────
+
+            // View user list and profiles
             'users.view',
+
+            // Create new user accounts
             'users.create',
+
+            // Edit user profiles (name, email, phone, status)
             'users.update',
+
+            // Delete or deactivate user accounts
             'users.delete',
+
+            // Full user management (wildcard for all users.* permissions)
             'users.manage',
 
-            // Roles
+            // ──────────────────────────────────────────────
+            // Role Management
+            // ──────────────────────────────────────────────
+
+            // View roles and their assigned permissions
             'roles.view',
+
+            // Create, edit, delete roles and assign permissions
             'roles.manage',
 
-            // Invoices
-            'invoices.view',
-            'invoices.create',
-            'invoices.update',
-            'invoices.delete',
+            // ──────────────────────────────────────────────
+            // Permission Management
+            // ──────────────────────────────────────────────
 
-            // Inventory
-            'inventory.view',
-            'inventory.adjust',
+            // View all available permissions
+            'permissions.view',
 
-            // Reports
-            'reports.view',
-            'reports.export',
+            // Create, edit, delete permissions
+            'permissions.manage',
 
-            // Settings
-            'settings.view',
-            'settings.manage',
+            // ──────────────────────────────────────────────
+            // Profile & Authentication
+            // ──────────────────────────────────────────────
+
+            // View and edit own profile
+            'profile.view',
+
+            // Update own profile information
+            'profile.update',
+
+            // Change own password
+            'profile.change-password',
+
+            // ──────────────────────────────────────────────
+            // Session Management
+            // ──────────────────────────────────────────────
+
+            // View active sessions across all users
+            'sessions.view',
+
+            // Force logout other users
+            'sessions.force-logout',
         ];
 
         foreach ($permissions as $name) {

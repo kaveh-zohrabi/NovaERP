@@ -27,16 +27,29 @@ class RolePermissionSeeder extends Seeder
 
         // Manager gets operational permissions
         $manager->givePermissionTo(Permission::whereIn('name', [
+            // Users
             'users.view', 'users.create', 'users.update',
+            // Roles
+            'roles.view',
+            // Profile
+            'profile.view', 'profile.update', 'profile.change-password',
+            // Invoices
             'invoices.view', 'invoices.create', 'invoices.update', 'invoices.delete',
+            // Inventory
             'inventory.view', 'inventory.adjust',
+            // Reports
             'reports.view', 'reports.export',
         ])->get());
 
         // Employee gets minimal permissions
         $employee->givePermissionTo(Permission::whereIn('name', [
+            // Profile
+            'profile.view', 'profile.update', 'profile.change-password',
+            // Invoices
             'invoices.view', 'invoices.create',
+            // Inventory
             'inventory.view',
+            // Reports
             'reports.view',
         ])->get());
     }
