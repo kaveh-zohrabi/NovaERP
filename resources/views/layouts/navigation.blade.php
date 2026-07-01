@@ -20,6 +20,11 @@
                             {{ __('Roles') }}
                         </x-nav-link>
                     @endcan
+                    @can('manage-permissions')
+                        <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.*')">
+                            {{ __('Permissions') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -78,6 +83,11 @@
             @can('manage-roles')
                 <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
                     {{ __('Roles') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('manage-permissions')
+                <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.*')">
+                    {{ __('Permissions') }}
                 </x-responsive-nav-link>
             @endcan
         </div>
