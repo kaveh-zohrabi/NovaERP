@@ -11,18 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Check if the authenticated user has the required role.
  *
- * Usage in routes:
- *   Route::middleware('role:Administrator')->group(function () { ... });
- *   Route::middleware('role:Administrator,Manager')->group(function () { ... });
+ * Must be used with 'auth' middleware:
+ *   Route::middleware(['auth', 'role:Administrator'])->group(...);
  */
 class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (! $request->user()) {
-            return redirect()->route('login');
-        }
-
         if (! $request->user()->hasAnyRole($roles)) {
             abort(403, 'Unauthorized. Required role: '.implode(' or ', $roles));
         }

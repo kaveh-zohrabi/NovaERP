@@ -11,17 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Check if the authenticated user has ALL of the required permissions.
  *
- * Usage in routes:
- *   Route::middleware('permission.all:users.view,users.create')->group(function () { ... });
+ * Must be used with 'auth' middleware:
+ *   Route::middleware(['auth', 'permission.all:users.view,users.create'])->group(...);
  */
 class EnsureAllPermissionsMiddleware
 {
     public function handle(Request $request, Closure $next, string ...$permissions): Response
     {
-        if (! $request->user()) {
-            return redirect()->route('login');
-        }
-
         if (! $request->user()->hasAllPermissions($permissions)) {
             abort(403, 'Unauthorized. Required permissions: '.implode(', ', $permissions));
         }

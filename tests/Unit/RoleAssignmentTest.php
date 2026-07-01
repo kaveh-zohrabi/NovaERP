@@ -6,8 +6,7 @@ namespace Tests\Unit;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Exceptions\RoleAlreadyExists;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -178,7 +177,7 @@ class RoleAssignmentTest extends TestCase
     {
         Role::create(['name' => 'Admin', 'guard_name' => 'web']);
 
-        $this->expectException(\Spatie\Permission\Exceptions\RoleAlreadyExists::class);
+        $this->expectException(RoleAlreadyExists::class);
 
         Role::create(['name' => 'Admin', 'guard_name' => 'web']);
     }

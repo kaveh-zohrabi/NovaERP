@@ -4,6 +4,7 @@ use App\Http\Middleware\EnsureAllPermissionsMiddleware;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\PermissionMiddleware;
 use App\Http\Middleware\RoleMiddleware;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -24,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->group('verified', [
-            \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+            EnsureEmailIsVerified::class,
             EnsureUserIsActive::class,
         ]);
     })

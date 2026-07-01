@@ -11,90 +11,42 @@ use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    /**
-     * The model to policy map for the application.
-     */
     protected $policies = [
         User::class => UserPolicy::class,
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     */
     public function boot(): void
     {
         $this->registerPolicies();
-
         $this->registerGates();
     }
 
-    /**
-     * Register gates for non-resource operations.
-     */
     private function registerGates(): void
     {
-        Gate::define('view-settings', function (User $user) {
-            try {
-                return $user->hasAnyPermission(['settings.view', 'settings.manage']);
-            } catch (\Throwable) {
-                return false;
-            }
-        });
+        $gates = [
+            'view-settings' => ['settings.view', 'settings.manage'],
+            'manage-settings' => ['settings.manage'],
+            'view-reports' => ['reports.view', 'reports.export'],
+            'export-reports' => ['reports.export'],
+            'view-sessions' => ['sessions.view'],
+            'force-logout' => ['sessions.force-logout'],
+            'manage-roles' => ['roles.view', 'roles.manage'],
+            'manage-permissions' => ['permissions.view', 'permissions.manage'],
+        ];
 
-        Gate::define('manage-settings', function (User $user) {
-            try {
-                return $user->hasPermissionTo('settings.manage');
-            } catch (\Throwable) {
-                return false;
-            }
-        });
+        foreach ($gates as $name => $permissions) {
+            Gate::define($name, fn (User $user) => $this->checkPermission($user, $permissions));
+        }
+    }
 
-        Gate::define('view-reports', function (User $user) {
-            try {
-                return $user->hasAnyPermission(['reports.view', 'reports.export']);
-            } catch (\Throwable) {
-                return false;
-            }
-        });
-
-        Gate::define('export-reports', function (User $user) {
-            try {
-                return $user->hasPermissionTo('reports.export');
-            } catch (\Throwable) {
-                return false;
-            }
-        });
-
-        Gate::define('view-sessions', function (User $user) {
-            try {
-                return $user->hasPermissionTo('sessions.view');
-            } catch (\Throwable) {
-                return false;
-            }
-        });
-
-        Gate::define('force-logout', function (User $user) {
-            try {
-                return $user->hasPermissionTo('sessions.force-logout');
-            } catch (\Throwable) {
-                return false;
-            }
-        });
-
-        Gate::define('manage-roles', function (User $user) {
-            try {
-                return $user->hasAnyPermission(['roles.view', 'roles.manage']);
-            } catch (\Throwable) {
-                return false;
-            }
-        });
-
-        Gate::define('manage-permissions', function (User $user) {
-            try {
-                return $user->hasAnyPermission(['permissions.view', 'permissions.manage']);
-            } catch (\Throwable) {
-                return false;
-            }
-        });
+    private function checkPermission(User $user, array $permissions): bool
+    {
+        try {
+            return count($permissions) === 1
+                ? $user->hasPermissionTo($permissions[0])
+                : $user->hasAnyPermission($permissions);
+        } catch (\Throwable) {
+            return false;
+        }
     }
 }
