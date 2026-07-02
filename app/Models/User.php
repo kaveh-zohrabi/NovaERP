@@ -10,6 +10,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -39,6 +41,36 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'status' => UserStatus::class,
         ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get all companies this user belongs to.
+     *
+     * Uses pivot table for future multi-company support.
+     * Each pivot row has is_default flag.
+     */
+    public function companies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class, 'company_user')
+            ->withPivot('is_default')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the user's default (current) company.
+     *
+     * In single-company mode, this is the only company.
+     * In multi-company mode, this is the active company.
+     */
+    public function defaultCompany(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_id');
     }
 
     /*
@@ -86,6 +118,48 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return strtoupper(mb_substr($this->name, 0, 2));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Company Helpers
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Check if user belongs to a specific company.
+     */
+    public function belongsToCompany(Company $company): bool
+    {
+        return $this->companies()->where('company_id', $company->id)->exists();
+    }
+
+    /**
+     * Get the current company from session.
+     */
+    public function currentCompany(): ?Company
+    {
+        $companyId = session('company_id');
+
+        if (! $companyId) {
+            return $this->companies()->where('is_default', true)->first();
+        }
+
+        return Company::find($companyId);
+    }
+
+    /**
+     * Switch user's active company.
+     */
+    public function switchCompany(Company $company): bool
+    {
+        if (! $this->belongsToCompany($company)) {
+            return false;
+        }
+
+        session(['company_id' => $company->id]);
+
+        return true;
     }
 
     /*
