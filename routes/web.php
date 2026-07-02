@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -20,6 +21,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+
+    Route::resource('companies', CompanyController::class)->except(['edit', 'update']);
+    Route::patch('/companies/{company}/activate', [CompanyController::class, 'activate'])->name('companies.activate');
+    Route::patch('/companies/{company}/deactivate', [CompanyController::class, 'deactivate'])->name('companies.deactivate');
 });
 
 require __DIR__.'/auth.php';

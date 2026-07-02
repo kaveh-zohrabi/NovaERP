@@ -9,6 +9,7 @@ use App\Http\Requests\Company\UpdateCompanyRequest;
 use App\Models\Company;
 use App\Services\CompanyService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CompanyController extends Controller
@@ -20,11 +21,17 @@ class CompanyController extends Controller
     /**
      * Display a listing of companies.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $companies = Company::withCount('users')
+            ->when($request->search, fn ($query, $search) => $query
+                ->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('slug', 'like', "%{$search}%")
+            )
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('companies.index', compact('companies'));
     }
