@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Models\Company;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use App\Support\BaseService;
 
 class CompanyService extends BaseService
 {
