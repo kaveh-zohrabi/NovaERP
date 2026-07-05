@@ -47,14 +47,6 @@ class Company extends Model
     |--------------------------------------------------------------------------
     */
 
-    /**
-     * Get the users that belong to this company.
-     *
-     * Uses the company_user pivot table. Each user-company pair
-     * can have additional metadata (e.g., is_default).
-     *
-     * Example: $company->users returns Collection of User models.
-     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'company_user')
@@ -62,17 +54,11 @@ class Company extends Model
             ->withTimestamps();
     }
 
-    /**
-     * Get the user who created this company.
-     */
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    /**
-     * Get the user who last updated this company.
-     */
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
@@ -142,6 +128,14 @@ class Company extends Model
     public function isActive(): bool
     {
         return $this->status === 'active';
+    }
+
+    /**
+     * Check if company has any users.
+     */
+    public function hasUsers(): bool
+    {
+        return $this->users()->count() > 0;
     }
 
     public function getSetting(string $key, mixed $default = null): mixed

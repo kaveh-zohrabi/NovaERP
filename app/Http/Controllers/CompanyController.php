@@ -90,6 +90,38 @@ class CompanyController extends Controller
     }
 
     /**
+     * Soft delete the specified company.
+     */
+    public function destroy(Company $company): RedirectResponse
+    {
+        $result = $this->companyService->delete($company);
+
+        return back()->with($result['success'] ? 'success' : 'error', $result['message']);
+    }
+
+    /**
+     * Restore a soft-deleted company.
+     */
+    public function restore(Company $company): RedirectResponse
+    {
+        $this->companyService->restore($company);
+
+        return back()->with('success', 'Company restored.');
+    }
+
+    /**
+     * Permanently delete the specified company.
+     */
+    public function forceDelete(Company $company): RedirectResponse
+    {
+        $this->companyService->forceDelete($company);
+
+        return redirect()
+            ->route('companies.index')
+            ->with('success', 'Company permanently deleted.');
+    }
+
+    /**
      * Activate the specified company.
      */
     public function activate(Company $company): RedirectResponse

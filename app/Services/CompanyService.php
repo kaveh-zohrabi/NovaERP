@@ -7,7 +7,6 @@ namespace App\Services;
 use App\Models\Company;
 use App\Models\User;
 use App\Support\BaseService;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyService extends BaseService
@@ -21,7 +20,6 @@ class CompanyService extends BaseService
     public function create(array $data, User $creator): Company
     {
         return $this->transaction(function () use ($data, $creator) {
-            // Handle logo upload
             $logoPath = null;
             if ($data['logo'] ?? null) {
                 $logoPath = $data['logo']->store('logos', 'public');
@@ -47,7 +45,6 @@ class CompanyService extends BaseService
                 'created_by' => $creator->id,
             ]);
 
-            // Assign creator as the default user
             $company->users()->attach($creator->id, ['is_default' => true]);
 
             return $company;
@@ -62,10 +59,8 @@ class CompanyService extends BaseService
      */
     public function update(Company $company, array $data): Company
     {
-        // Handle logo upload
         $logoPath = $company->logo;
         if ($data['logo'] ?? null) {
-            // Delete old logo if exists
             if ($company->logo) {
                 Storage::disk('public')->delete($company->logo);
             }
@@ -97,8 +92,6 @@ class CompanyService extends BaseService
 
     /**
      * Activate a company.
-     *
-     * @return bool  true if activated, false if already active
      */
     public function activate(Company $company): bool
     {
@@ -113,8 +106,6 @@ class CompanyService extends BaseService
 
     /**
      * Deactivate a company.
-     *
-     * @return bool  true if deactivated, false if already inactive
      */
     public function deactivate(Company $company): bool
     {
@@ -125,5 +116,58 @@ class CompanyService extends BaseService
         $company->update(['status' => 'inactive']);
 
         return true;
+    }
+
+    /**
+     * Soft delete a company.
+     *
+     * Prevents deletion if company has active users.
+     *
+     * @return array{success: bool, message: string}
+     */
+    public function delete(Company $company): array
+    {
+        if ($company->users()->count() > 0) {
+            return [
+                'success' => false,
+                'message' => 'Cannot delete company with active users. Remove all users first.',
+            ];
+        }
+
+        $company->delete();
+
+        return [
+            'success' => true,
+            'message' => 'Company deleted successfully.',
+        ];
+    }
+
+    /**
+     * Restore a soft-deleted company.
+     */
+    public function restore(Company $company): bool
+    {
+        if (! $company->trashed()) {
+            return false;
+        }
+
+        $company->restore();
+
+        return true;
+    }
+
+    /**
+     * Permanently delete a company.
+     *
+     * Warning: This cannot be undone.
+     */
+    public function forceDelete(Company $company): void
+    {
+        if ($company->logo) {
+            Storage::disk('public')->delete($company->logo);
+        }
+
+        $company->users()->detach();
+        $company->forceDelete();
     }
 }
