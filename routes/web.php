@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
 
-    Route::resource('companies', CompanyController::class)->except(['edit', 'update']);
+    Route::resource('companies', CompanyController::class);
     Route::patch('/companies/{company}/activate', [CompanyController::class, 'activate'])->name('companies.activate');
     Route::patch('/companies/{company}/deactivate', [CompanyController::class, 'deactivate'])->name('companies.deactivate');
 });
