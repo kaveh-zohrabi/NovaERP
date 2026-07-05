@@ -7,14 +7,13 @@ namespace App\Services;
 use App\Models\Company;
 use App\Models\User;
 use App\Support\BaseService;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyService extends BaseService
 {
     /**
      * Create a new company and assign the creator.
-     *
-     * Runs in a transaction to ensure both the company
-     * and the user-company pivot are created together.
      *
      * @param  array<string, mixed>  $data  Validated company data
      * @param  User  $creator  The user creating the company
@@ -22,6 +21,12 @@ class CompanyService extends BaseService
     public function create(array $data, User $creator): Company
     {
         return $this->transaction(function () use ($data, $creator) {
+            // Handle logo upload
+            $logoPath = null;
+            if ($data['logo'] ?? null) {
+                $logoPath = $data['logo']->store('logos', 'public');
+            }
+
             $company = Company::create([
                 'name' => $data['name'],
                 'slug' => $data['slug'],
@@ -36,6 +41,7 @@ class CompanyService extends BaseService
                 'state' => $data['state'] ?? null,
                 'country' => $data['country'] ?? null,
                 'postal_code' => $data['postal_code'] ?? null,
+                'logo' => $logoPath,
                 'status' => $data['status'] ?? 'active',
                 'settings' => $data['settings'] ?? null,
                 'created_by' => $creator->id,
@@ -51,13 +57,21 @@ class CompanyService extends BaseService
     /**
      * Update an existing company.
      *
-     * Handles logo upload removal if no new logo is provided.
-     *
      * @param  Company  $company  The company to update
      * @param  array<string, mixed>  $data  Validated company data
      */
     public function update(Company $company, array $data): Company
     {
+        // Handle logo upload
+        $logoPath = $company->logo;
+        if ($data['logo'] ?? null) {
+            // Delete old logo if exists
+            if ($company->logo) {
+                Storage::disk('public')->delete($company->logo);
+            }
+            $logoPath = $data['logo']->store('logos', 'public');
+        }
+
         $company->update([
             'name' => $data['name'],
             'slug' => $data['slug'],
@@ -72,6 +86,7 @@ class CompanyService extends BaseService
             'state' => $data['state'] ?? null,
             'country' => $data['country'] ?? null,
             'postal_code' => $data['postal_code'] ?? null,
+            'logo' => $logoPath,
             'status' => $data['status'],
             'settings' => $data['settings'] ?? null,
             'updated_by' => auth()->id(),
@@ -82,8 +97,6 @@ class CompanyService extends BaseService
 
     /**
      * Activate a company.
-     *
-     * Sets status to 'active'. Company must be inactive.
      *
      * @return bool  true if activated, false if already active
      */
@@ -100,8 +113,6 @@ class CompanyService extends BaseService
 
     /**
      * Deactivate a company.
-     *
-     * Sets status to 'inactive'. Company must be active.
      *
      * @return bool  true if deactivated, false if already inactive
      */
