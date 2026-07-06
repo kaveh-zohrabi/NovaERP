@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Branch;
+use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Position;
 use App\Models\User;
 use App\Support\BaseService;
 
@@ -31,6 +34,19 @@ class EmployeeService extends BaseService
         $data['updated_by'] = auth()->id();
 
         $employee->update($data);
+
+        return $employee->fresh();
+    }
+
+    /**
+     * Assign an employee to a branch, department, and/or position.
+     */
+    public function assign(Employee $employee, array $assignments): Employee
+    {
+        $employee->update(array_merge(
+            $assignments,
+            ['updated_by' => auth()->id()],
+        ));
 
         return $employee->fresh();
     }
