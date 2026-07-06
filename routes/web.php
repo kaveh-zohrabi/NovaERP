@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\BranchController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;

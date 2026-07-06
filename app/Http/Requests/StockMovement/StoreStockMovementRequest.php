@@ -20,7 +20,7 @@ class StoreStockMovementRequest extends FormRequest
             'from_warehouse_id' => ['required_with:movement_type:TRANSFER', 'exists:warehouses,id'],
             'to_warehouse_id' => ['required_with:movement_type:TRANSFER', 'exists:warehouses,id', 'neq:from_warehouse_id'],
             'movement_type' => ['required', 'string', 'in:IN,OUT,TRANSFER,ADJUSTMENT'],
-            'quantity' => ['required', 'numeric', 'min:0.01'],
+            'quantity' => ['required', 'numeric', 'min:-999999.99', 'not_in:0'],
             'notes' => ['nullable', 'string', 'max:1000', 'required_if:movement_type,ADJUSTMENT'],
         ];
     }

@@ -39,22 +39,26 @@ class StockMovementController extends Controller
         $user = $request->user();
         $data = $request->validated();
 
-        match ($data['movement_type']) {
-            'IN' => $this->movementService->stockIn(
-                $data['product_id'], $data['warehouse_id'], $data['quantity'], $data['notes'] ?? null, $user
-            ),
-            'OUT' => $this->movementService->stockOut(
-                $data['product_id'], $data['warehouse_id'], $data['quantity'], $data['notes'] ?? null, $user
-            ),
-            'TRANSFER' => $this->movementService->transfer(
-                $data['product_id'], $data['from_warehouse_id'], $data['to_warehouse_id'],
-                $data['quantity'], $data['notes'] ?? null, $user
-            ),
-            'ADJUSTMENT' => $this->movementService->adjust(
-                $data['product_id'], $data['warehouse_id'], $data['quantity'], $data['notes'] ?? '', $user
-            ),
-        };
+        try {
+            match ($data['movement_type']) {
+                'IN' => $this->movementService->stockIn(
+                    $data['product_id'], $data['warehouse_id'], $data['quantity'], $data['notes'] ?? null, $user
+                ),
+                'OUT' => $this->movementService->stockOut(
+                    $data['product_id'], $data['warehouse_id'], $data['quantity'], $data['notes'] ?? null, $user
+                ),
+                'TRANSFER' => $this->movementService->transfer(
+                    $data['product_id'], $data['from_warehouse_id'], $data['to_warehouse_id'],
+                    $data['quantity'], $data['notes'] ?? null, $user
+                ),
+                'ADJUSTMENT' => $this->movementService->adjust(
+                    $data['product_id'], $data['warehouse_id'], $data['quantity'], $data['notes'] ?? '', $user
+                ),
+            };
 
-        return back()->with('success', 'Stock movement recorded successfully.');
+            return back()->with('success', 'Stock movement recorded successfully.');
+        } catch (\InvalidArgumentException $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

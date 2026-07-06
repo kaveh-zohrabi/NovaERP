@@ -22,6 +22,8 @@ class Stock extends Model
 {
     use HasFactory;
 
+    protected $table = 'stock';
+
     protected function casts(): array
     {
         return [
