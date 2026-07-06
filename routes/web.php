@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\ChartOfAccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GoodsReceiptController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProductController;
@@ -89,6 +91,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/{order}/invoice', [InvoiceController::class, 'generate'])->name('invoices.generate');
     Route::patch('/invoices/{invoice}/paid', [InvoiceController::class, 'markPaid'])->name('invoices.paid');
     Route::patch('/invoices/{invoice}/cancel', [InvoiceController::class, 'markCancelled'])->name('invoices.cancel');
+
+    // Accounting
+    Route::resource('accounts', ChartOfAccountController::class);
+    Route::resource('journal-entries', JournalEntryController::class);
+    Route::patch('/journal-entries/{journal_entry}/post', [JournalEntryController::class, 'post'])->name('journal-entries.post');
+    Route::patch('/journal-entries/{journal_entry}/reverse', [JournalEntryController::class, 'reverse'])->name('journal-entries.reverse');
 });
 
 require __DIR__.'/auth.php';
