@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             AdminUserSeeder::class,
             CategorySeeder::class,
+            ChartOfAccountSeeder::class,
         ]);
     }
 }
