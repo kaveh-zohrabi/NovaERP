@@ -3,6 +3,7 @@
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
@@ -45,6 +46,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/positions/{position}/restore', [PositionController::class, 'restore'])->name('positions.restore');
     Route::patch('/positions/{position}/activate', [PositionController::class, 'activate'])->name('positions.activate');
     Route::patch('/positions/{position}/deactivate', [PositionController::class, 'deactivate'])->name('positions.deactivate');
+
+    Route::resource('employees', EmployeeController::class);
+    Route::post('/employees/{employee}/restore', [EmployeeController::class, 'restore'])->name('employees.restore');
 });
 
 require __DIR__.'/auth.php';
