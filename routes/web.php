@@ -4,13 +4,16 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\GoodsReceiptController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +67,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/stock-movements', [StockMovementController::class, 'index'])->name('stock-movements.index');
     Route::get('/stock-movements/create', [StockMovementController::class, 'create'])->name('stock-movements.create');
     Route::post('/stock-movements', [StockMovementController::class, 'store'])->name('stock-movements.store');
+
+    // Purchasing
+    Route::resource('suppliers', SupplierController::class);
+    Route::resource('orders', PurchaseOrderController::class);
+    Route::patch('/orders/{order}/approve', [PurchaseOrderController::class, 'approve'])->name('orders.approve');
+    Route::patch('/orders/{order}/cancel', [PurchaseOrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('/orders/{order}/receive', [GoodsReceiptController::class, 'create'])->name('receipts.create');
+    Route::post('/orders/{order}/receive', [GoodsReceiptController::class, 'store'])->name('receipts.store');
 });
 
 require __DIR__.'/auth.php';
