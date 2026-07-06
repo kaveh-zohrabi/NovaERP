@@ -12,9 +12,21 @@ class PurchaseOrderService extends BaseService
 {
     public function create(array $data, User $creator): PurchaseOrder
     {
+        if (empty($data['order_number'])) {
+            $data['order_number'] = $this->generateOrderNumber();
+        }
+
         return PurchaseOrder::create(
             array_merge($data, ['created_by' => $creator->id])
         );
+    }
+
+    private function generateOrderNumber(): string
+    {
+        $year = now()->format('Y');
+        $sequence = PurchaseOrder::whereYear('created_at', now()->year)->count() + 1;
+
+        return "PO-{$year}-".str_pad((string) $sequence, 5, '0', STR_PAD_LEFT);
     }
 
     public function addItem(PurchaseOrder $order, array $data): \App\Models\PurchaseOrderItem
