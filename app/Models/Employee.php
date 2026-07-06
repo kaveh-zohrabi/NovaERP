@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\EmployeeStatus;
+use App\Enums\EmploymentType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +44,8 @@ class Employee extends Model
             'termination_date' => 'date',
             'salary' => 'decimal:2',
             'metadata' => 'array',
+            'status' => EmployeeStatus::class,
+            'employment_type' => EmploymentType::class,
         ];
     }
 
@@ -88,6 +92,22 @@ class Employee extends Model
 
     /*
     |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', EmployeeStatus::Active);
+    }
+
+    public function scopeTerminated($query)
+    {
+        return $query->where('status', EmployeeStatus::Terminated);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Accessors
     |--------------------------------------------------------------------------
     */
@@ -110,11 +130,11 @@ class Employee extends Model
 
     public function isActive(): bool
     {
-        return $this->status === 'active';
+        return $this->status === EmployeeStatus::Active;
     }
 
     public function isTerminated(): bool
     {
-        return $this->status === 'terminated';
+        return $this->status === EmployeeStatus::Terminated;
     }
 }
