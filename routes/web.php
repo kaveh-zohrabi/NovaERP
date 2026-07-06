@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -27,6 +28,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/companies/{company}/force-delete', [CompanyController::class, 'forceDelete'])->name('companies.force-delete');
     Route::patch('/companies/{company}/activate', [CompanyController::class, 'activate'])->name('companies.activate');
     Route::patch('/companies/{company}/deactivate', [CompanyController::class, 'deactivate'])->name('companies.deactivate');
+
+    Route::resource('branches', BranchController::class);
+    Route::post('/branches/{branch}/restore', [BranchController::class, 'restore'])->name('branches.restore');
+    Route::patch('/branches/{branch}/activate', [BranchController::class, 'activate'])->name('branches.activate');
+    Route::patch('/branches/{branch}/deactivate', [BranchController::class, 'deactivate'])->name('branches.deactivate');
 });
 
 require __DIR__.'/auth.php';
