@@ -4,6 +4,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/departments/{department}/restore', [DepartmentController::class, 'restore'])->name('departments.restore');
     Route::patch('/departments/{department}/activate', [DepartmentController::class, 'activate'])->name('departments.activate');
     Route::patch('/departments/{department}/deactivate', [DepartmentController::class, 'deactivate'])->name('departments.deactivate');
+
+    Route::resource('positions', PositionController::class);
+    Route::post('/positions/{position}/restore', [PositionController::class, 'restore'])->name('positions.restore');
+    Route::patch('/positions/{position}/activate', [PositionController::class, 'activate'])->name('positions.activate');
+    Route::patch('/positions/{position}/deactivate', [PositionController::class, 'deactivate'])->name('positions.deactivate');
 });
 
 require __DIR__.'/auth.php';
