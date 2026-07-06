@@ -24,7 +24,6 @@ class BranchController extends Controller
     public function index(Request $request): View
     {
         $branches = Branch::with('company')
-            ->withCount('users')
             ->when($request->search, fn ($query, $search) => $query
                 ->where('name', 'like', "%{$search}%")
                 ->orWhere('code', 'like', "%{$search}%")
