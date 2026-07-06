@@ -53,19 +53,23 @@ class JournalEntryController extends Controller
             'lines.*.description' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $this->journalEntryService->create(
-            [
-                'company_id' => $validated['company_id'],
-                'date' => $validated['date'],
-                'description' => $validated['description'],
-                'reference_type' => $validated['reference_type'] ?? null,
-                'reference_id' => $validated['reference_id'] ?? null,
-            ],
-            $validated['lines'],
-            $request->user(),
-        );
+        try {
+            $this->journalEntryService->create(
+                [
+                    'company_id' => $validated['company_id'],
+                    'date' => $validated['date'],
+                    'description' => $validated['description'],
+                    'reference_type' => $validated['reference_type'] ?? null,
+                    'reference_id' => $validated['reference_id'] ?? null,
+                ],
+                $validated['lines'],
+                $request->user(),
+            );
 
-        return redirect()->route('journal-entries.index')->with('success', 'Journal entry created successfully.');
+            return redirect()->route('journal-entries.index')->with('success', 'Journal entry created successfully.');
+        } catch (\InvalidArgumentException $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     public function show(JournalEntry $journalEntry): View
