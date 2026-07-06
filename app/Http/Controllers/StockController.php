@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
-use App\Models\Warehouse;
 use App\Services\StockService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;

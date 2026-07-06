@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Stock;
-use App\Models\StockMovement;
 use App\Support\BaseService;
 
 class StockService extends BaseService

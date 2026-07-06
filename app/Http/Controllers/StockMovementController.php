@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StockMovement\StoreStockMovementRequest;
 use App\Models\StockMovement;
-use App\Models\Warehouse;
 use App\Services\StockMovementService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
