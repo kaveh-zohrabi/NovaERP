@@ -2,15 +2,18 @@
 
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GoodsReceiptController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\SupplierController;
@@ -70,11 +73,22 @@ Route::middleware(['auth'])->group(function () {
 
     // Purchasing
     Route::resource('suppliers', SupplierController::class);
-    Route::resource('orders', PurchaseOrderController::class);
-    Route::patch('/orders/{order}/approve', [PurchaseOrderController::class, 'approve'])->name('orders.approve');
-    Route::patch('/orders/{order}/cancel', [PurchaseOrderController::class, 'cancel'])->name('orders.cancel');
-    Route::get('/orders/{order}/receive', [GoodsReceiptController::class, 'create'])->name('receipts.create');
-    Route::post('/orders/{order}/receive', [GoodsReceiptController::class, 'store'])->name('receipts.store');
+    Route::resource('purchasing-orders', PurchaseOrderController::class);
+    Route::patch('/purchasing-orders/{purchasing_order}/approve', [PurchaseOrderController::class, 'approve'])->name('purchasing-orders.approve');
+    Route::patch('/purchasing-orders/{purchasing_order}/cancel', [PurchaseOrderController::class, 'cancel'])->name('purchasing-orders.cancel');
+    Route::get('/purchasing-orders/{purchasing_order}/receive', [GoodsReceiptController::class, 'create'])->name('receipts.create');
+    Route::post('/purchasing-orders/{purchasing_order}/receive', [GoodsReceiptController::class, 'store'])->name('receipts.store');
+
+    // Sales
+    Route::resource('customers', CustomerController::class);
+    Route::resource('orders', SalesOrderController::class);
+    Route::patch('/orders/{order}/confirm', [SalesOrderController::class, 'confirm'])->name('orders.confirm');
+    Route::patch('/orders/{order}/cancel', [SalesOrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
+    Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::post('/orders/{order}/invoice', [InvoiceController::class, 'generate'])->name('invoices.generate');
+    Route::patch('/invoices/{invoice}/paid', [InvoiceController::class, 'markPaid'])->name('invoices.paid');
+    Route::patch('/invoices/{invoice}/cancel', [InvoiceController::class, 'markCancelled'])->name('invoices.cancel');
 });
 
 require __DIR__.'/auth.php';

@@ -42,45 +42,45 @@ class PurchaseOrderController extends Controller
     {
         $order = $this->orderService->create($request->validated(), $request->user());
 
-        return redirect()->route('orders.show', $order)->with('success', 'Purchase order created successfully.');
+        return redirect()->route('purchasing-orders.show', $order)->with('success', 'Purchase order created successfully.');
     }
 
-    public function show(PurchaseOrder $order): View
+    public function show(PurchaseOrder $purchasingOrder): View
     {
-        $order->load('supplier', 'warehouse', 'items.product', 'goodsReceipts');
+        $purchasingOrder->load('supplier', 'warehouse', 'items.product', 'goodsReceipts');
 
-        return view('purchasing.orders.show', compact('order'));
+        return view('purchasing.orders.show', ['order' => $purchasingOrder]);
     }
 
-    public function edit(PurchaseOrder $order): View
+    public function edit(PurchaseOrder $purchasingOrder): View
     {
-        return view('purchasing.orders.edit', compact('order'));
+        return view('purchasing.orders.edit', ['order' => $purchasingOrder]);
     }
 
-    public function update(UpdatePurchaseOrderRequest $request, PurchaseOrder $order): RedirectResponse
+    public function update(UpdatePurchaseOrderRequest $request, PurchaseOrder $purchasingOrder): RedirectResponse
     {
-        $order->update($request->validated());
+        $purchasingOrder->update($request->validated());
 
-        return redirect()->route('orders.show', $order)->with('success', 'Purchase order updated successfully.');
+        return redirect()->route('purchasing-orders.show', $purchasingOrder)->with('success', 'Purchase order updated successfully.');
     }
 
-    public function destroy(PurchaseOrder $order): RedirectResponse
+    public function destroy(PurchaseOrder $purchasingOrder): RedirectResponse
     {
-        $result = $this->orderService->delete($order);
+        $result = $this->orderService->delete($purchasingOrder);
 
         return back()->with($result['success'] ? 'success' : 'error', $result['message']);
     }
 
-    public function approve(PurchaseOrder $order): RedirectResponse
+    public function approve(PurchaseOrder $purchasingOrder): RedirectResponse
     {
-        $this->orderService->approve($order);
+        $this->orderService->approve($purchasingOrder);
 
         return back()->with('success', 'Purchase order approved.');
     }
 
-    public function cancel(PurchaseOrder $order): RedirectResponse
+    public function cancel(PurchaseOrder $purchasingOrder): RedirectResponse
     {
-        $this->orderService->cancel($order);
+        $this->orderService->cancel($purchasingOrder);
 
         return back()->with('success', 'Purchase order cancelled.');
     }
