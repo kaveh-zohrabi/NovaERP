@@ -1,13 +1,18 @@
 <?php
 
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -51,6 +56,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/employees/{employee}/restore', [EmployeeController::class, 'restore'])->name('employees.restore');
     Route::patch('/employees/{employee}/terminate', [EmployeeController::class, 'terminate'])->name('employees.terminate');
     Route::patch('/employees/{employee}/reactivate', [EmployeeController::class, 'reactivate'])->name('employees.reactivate');
+
+    // Inventory
+    Route::resource('products', ProductController::class);
+    Route::resource('warehouses', WarehouseController::class);
+    Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+    Route::get('/stock/{stock}', [StockController::class, 'show'])->name('stock.show');
+    Route::get('/stock-movements', [StockMovementController::class, 'index'])->name('stock-movements.index');
+    Route::get('/stock-movements/create', [StockMovementController::class, 'create'])->name('stock-movements.create');
+    Route::post('/stock-movements', [StockMovementController::class, 'store'])->name('stock-movements.store');
 });
 
 require __DIR__.'/auth.php';
