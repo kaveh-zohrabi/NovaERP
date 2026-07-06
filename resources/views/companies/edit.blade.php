@@ -19,7 +19,7 @@
                 @csrf
                 @method('PUT')
 
-                <x-companies._form :company="$company" />
+                @include('companies._form', ['company' => $company])
 
                 {{-- Submit --}}
                 <div class="flex items-center justify-end gap-3">

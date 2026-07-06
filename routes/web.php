@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
 
     Route::resource('companies', CompanyController::class);
+    Route::post('/companies/{company}/restore', [CompanyController::class, 'restore'])->name('companies.restore');
+    Route::delete('/companies/{company}/force-delete', [CompanyController::class, 'forceDelete'])->name('companies.force-delete');
     Route::patch('/companies/{company}/activate', [CompanyController::class, 'activate'])->name('companies.activate');
     Route::patch('/companies/{company}/deactivate', [CompanyController::class, 'deactivate'])->name('companies.deactivate');
 });

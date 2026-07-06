@@ -37,7 +37,6 @@ class Company extends Model
     {
         return [
             'settings' => 'array',
-            'is_active' => 'boolean',
         ];
     }
 
@@ -88,22 +87,16 @@ class Company extends Model
 
     public function getLogoUrlAttribute(): ?string
     {
-        if ($this->logo) {
-            return asset('storage/'.$this->logo);
-        }
-
-        return null;
+        return $this->logo ? asset('storage/'.$this->logo) : null;
     }
 
     public function getInitialsAttribute(): string
     {
         $parts = explode(' ', $this->name);
 
-        if (count($parts) >= 2) {
-            return strtoupper(mb_substr($parts[0], 0, 1).mb_substr(end($parts), 0, 1));
-        }
-
-        return strtoupper(mb_substr($this->name, 0, 2));
+        return count($parts) >= 2
+            ? strtoupper(mb_substr($parts[0], 0, 1).mb_substr(end($parts), 0, 1))
+            : strtoupper(mb_substr($this->name, 0, 2));
     }
 
     public function getFullAddressAttribute(): ?string

@@ -101,9 +101,13 @@ class CompanyController extends Controller
 
     /**
      * Restore a soft-deleted company.
+     *
+     * Uses withTrashed() because route model binding excludes deleted models.
      */
-    public function restore(Company $company): RedirectResponse
+    public function restore(int $id): RedirectResponse
     {
+        $company = Company::withTrashed()->findOrFail($id);
+
         $this->companyService->restore($company);
 
         return back()->with('success', 'Company restored.');
@@ -112,8 +116,10 @@ class CompanyController extends Controller
     /**
      * Permanently delete the specified company.
      */
-    public function forceDelete(Company $company): RedirectResponse
+    public function forceDelete(int $id): RedirectResponse
     {
+        $company = Company::withTrashed()->findOrFail($id);
+
         $this->companyService->forceDelete($company);
 
         return redirect()

@@ -18,7 +18,7 @@
             <form method="POST" action="{{ route('companies.store') }}" enctype="multipart/form-data" class="space-y-8">
                 @csrf
 
-                <x-companies._form />
+                @include('companies._form')
 
                 {{-- Submit --}}
                 <div class="flex items-center justify-end gap-3">
