@@ -111,4 +111,24 @@ class EmployeeController extends Controller
 
         return back()->with('success', 'Employee restored.');
     }
+
+    /**
+     * Terminate an employee.
+     */
+    public function terminate(Employee $employee): RedirectResponse
+    {
+        $this->employeeService->terminate($employee);
+
+        return back()->with('success', 'Employee terminated.');
+    }
+
+    /**
+     * Reactivate a terminated employee.
+     */
+    public function reactivate(Employee $employee): RedirectResponse
+    {
+        $this->employeeService->reactivate($employee);
+
+        return back()->with('success', 'Employee reactivated.');
+    }
 }

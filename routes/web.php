@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('employees', EmployeeController::class);
     Route::post('/employees/{employee}/restore', [EmployeeController::class, 'restore'])->name('employees.restore');
+    Route::patch('/employees/{employee}/terminate', [EmployeeController::class, 'terminate'])->name('employees.terminate');
+    Route::patch('/employees/{employee}/reactivate', [EmployeeController::class, 'reactivate'])->name('employees.reactivate');
 });
 
 require __DIR__.'/auth.php';
