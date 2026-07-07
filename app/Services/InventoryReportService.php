@@ -15,7 +15,7 @@ class InventoryReportService extends BaseService
     {
         $companyId = $filters['company_id'] ?? 1;
 
-        $stockData = Stock::where('company_id', $companyId)
+        $stockData = Stock::whereHas('warehouse', fn ($q) => $q->where('company_id', $companyId))
             ->join('products', 'stock.product_id', '=', 'products.id')
             ->join('warehouses', 'stock.warehouse_id', '=', 'warehouses.id')
             ->selectRaw('
@@ -40,7 +40,7 @@ class InventoryReportService extends BaseService
     {
         $companyId = $filters['company_id'] ?? 1;
 
-        $lowStock = Stock::where('company_id', $companyId)
+        $lowStock = Stock::whereHas('warehouse', fn ($q) => $q->where('company_id', $companyId))
             ->where('reorder_level', '>', 0)
             ->whereColumn('quantity', '<=', 'reorder_level')
             ->join('products', 'stock.product_id', '=', 'products.id')

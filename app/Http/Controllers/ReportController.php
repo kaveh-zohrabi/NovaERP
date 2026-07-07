@@ -9,7 +9,9 @@ use App\Services\ExportService;
 use App\Services\ReportService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ReportController extends Controller
 {
@@ -35,7 +37,7 @@ class ReportController extends Controller
         return view('reporting.reports.show', ['type' => $type, 'data' => $data]);
     }
 
-    public function export(string $type, Request $request): RedirectResponse
+    public function export(string $type, Request $request): Response|BinaryFileResponse
     {
         $data = $this->reportService->executeReport($type, array_merge(
             ['company_id' => $request->user()->company_id ?? 1],
