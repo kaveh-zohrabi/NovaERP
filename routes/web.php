@@ -11,6 +11,8 @@ use App\Http\Controllers\GoodsReceiptController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\FolderController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\PermissionController;
@@ -129,6 +131,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{type}', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{type}/export', [ReportController::class, 'export'])->name('reports.export');
+
+    // Document Management
+    Route::get('/documents/trash', [DocumentController::class, 'trash'])->name('documents.trash');
+    Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
+    Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::patch('/documents/{document}/rename', [DocumentController::class, 'rename'])->name('documents.rename');
+    Route::patch('/documents/{document}/move', [DocumentController::class, 'move'])->name('documents.move');
+    Route::patch('/documents/{document}/restore', [DocumentController::class, 'restore'])->name('documents.restore');
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::delete('/documents/{document}/force-delete', [DocumentController::class, 'forceDelete'])->name('documents.force-delete');
+    Route::resource('folders', FolderController::class)->except(['edit', 'update']);
+    Route::patch('/folders/{folder}', [FolderController::class, 'update'])->name('folders.update');
 });
 
 require __DIR__.'/auth.php';
