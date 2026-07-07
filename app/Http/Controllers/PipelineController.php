@@ -66,9 +66,9 @@ class PipelineController extends Controller
         return back()->with('success', 'Stage added successfully.');
     }
 
-    public function removeStage(\App\Models\PipelineStage $stage): RedirectResponse
+    public function removeStage(\App\Models\PipelineStage $pipelineStage): RedirectResponse
     {
-        $this->pipelineService->removeStage($stage);
+        $this->pipelineService->removeStage($pipelineStage);
 
         return back()->with('success', 'Stage removed successfully.');
     }

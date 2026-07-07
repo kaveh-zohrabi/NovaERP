@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             CategorySeeder::class,
             ChartOfAccountSeeder::class,
+            PipelineSeeder::class,
         ]);
     }
 }
