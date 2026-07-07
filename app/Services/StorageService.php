@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Document;
+use App\Support\BaseService;
 use Illuminate\Support\Facades\Storage;
 
 class StorageService extends BaseService

@@ -133,15 +133,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports/{type}/export', [ReportController::class, 'export'])->name('reports.export');
 
     // Document Management
+    Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
     Route::get('/documents/trash', [DocumentController::class, 'trash'])->name('documents.trash');
     Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
     Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
     Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
     Route::patch('/documents/{document}/rename', [DocumentController::class, 'rename'])->name('documents.rename');
     Route::patch('/documents/{document}/move', [DocumentController::class, 'move'])->name('documents.move');
-    Route::patch('/documents/{document}/restore', [DocumentController::class, 'restore'])->name('documents.restore');
+    Route::patch('/documents/{document}/restore', [DocumentController::class, 'restore'])->name('documents.restore')->withTrashed();
     Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
-    Route::delete('/documents/{document}/force-delete', [DocumentController::class, 'forceDelete'])->name('documents.force-delete');
+    Route::delete('/documents/{document}/force-delete', [DocumentController::class, 'forceDelete'])->name('documents.force-delete')->withTrashed();
     Route::resource('folders', FolderController::class)->except(['edit', 'update']);
     Route::patch('/folders/{folder}', [FolderController::class, 'update'])->name('folders.update');
 });

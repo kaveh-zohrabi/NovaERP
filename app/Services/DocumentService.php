@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Document;
 use App\Models\Folder;
+use App\Support\BaseService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
