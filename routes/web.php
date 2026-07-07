@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ChartOfAccountController;
 use App\Http\Controllers\CompanyController;
@@ -9,7 +10,10 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GoodsReceiptController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\LeadController;
+use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -19,6 +23,7 @@ use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -97,6 +102,24 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('journal-entries', JournalEntryController::class);
     Route::patch('/journal-entries/{journal_entry}/post', [JournalEntryController::class, 'post'])->name('journal-entries.post');
     Route::patch('/journal-entries/{journal_entry}/reverse', [JournalEntryController::class, 'reverse'])->name('journal-entries.reverse');
+
+    // CRM
+    Route::resource('leads', LeadController::class);
+    Route::patch('/leads/{lead}/convert', [LeadController::class, 'convert'])->name('leads.convert');
+    Route::resource('opportunities', OpportunityController::class);
+    Route::patch('/opportunities/{opportunity}/won', [OpportunityController::class, 'markWon'])->name('opportunities.won');
+    Route::patch('/opportunities/{opportunity}/lost', [OpportunityController::class, 'markLost'])->name('opportunities.lost');
+    Route::resource('pipelines', PipelineController::class)->except(['edit', 'update']);
+    Route::post('/pipelines/{pipeline}/stages', [PipelineController::class, 'addStage'])->name('pipelines.stages.store');
+    Route::delete('/pipeline-stages/{pipeline_stage}', [PipelineController::class, 'removeStage'])->name('pipelines.stages.destroy');
+    Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
+    Route::post('/activities', [ActivityController::class, 'store'])->name('activities.store');
+    Route::patch('/activities/{activity}/complete', [ActivityController::class, 'complete'])->name('activities.complete');
+    Route::delete('/activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::patch('/tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 });
 
 require __DIR__.'/auth.php';
