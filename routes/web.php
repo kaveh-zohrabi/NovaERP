@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ChartOfAccountController;
 use App\Http\Controllers\CompanyController;
@@ -155,6 +156,13 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
     Route::patch('/notifications/{notification}/archive', [NotificationController::class, 'archive'])->name('notifications.archive');
     Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+
+    // Audit
+    Route::get('/audit', [AuditController::class, 'index'])->name('audit.index');
+    Route::get('/audit/export', [AuditController::class, 'export'])->name('audit.export');
+    Route::get('/audit/activity', [AuditController::class, 'history'])->name('audit.activity');
+    Route::get('/audit/entity-history', [AuditController::class, 'entityHistory'])->name('audit.entity-history');
+    Route::get('/audit/{auditLog}', [AuditController::class, 'show'])->name('audit.show');
 });
 
 require __DIR__.'/auth.php';
